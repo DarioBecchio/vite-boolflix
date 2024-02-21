@@ -1,5 +1,7 @@
 <script>
 import axios from "axios";
+import AppHeader from "./components/AppHeader.vue";
+import AppMain from "./components/AppMain.vue";
 export default {
   name: "App",
   data() {
@@ -31,10 +33,8 @@ export default {
       console.log(url);
       this.getMovies(url);
     },
-    getFilteredImages() {
-      const imageUrl = `${this.base_image_URL}${this}`;
-    },
   },
+  components: { AppHeader, AppMain },
   computed: {
     getResults() {
       return this.movies.data.results.length;
@@ -45,13 +45,15 @@ export default {
 </script>
 
 <template>
+  <AppHeader></AppHeader>
+  <AppMain></AppMain>
   <div class="filter">
     <input
       type="text"
       placeholder="Write a Movie Title Here"
       v-model="searchKeyWord"
     />
-    <button @click="getFilteredMovies">Search Movies</button>
+    <button @click.enter="getFilteredMovies">Search Movies</button>
   </div>
 
   <div class="card" v-for="movie in movies">
