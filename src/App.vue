@@ -9,6 +9,7 @@ export default {
       movies: [],
       loading: true,
       error: false,
+      searchKeyWord: "",
     };
   },
   methods: {
@@ -25,6 +26,9 @@ export default {
           console.error(error);
         });
     },
+    getFilteredMovies() {
+      const customUrl = `${this.base_api_URL}&query=${this.searchKeyWord}`;
+    },
   },
   computed: {
     getResults() {
@@ -40,6 +44,13 @@ export default {
 </script>
 
 <template>
+  <div class="filter">
+    <input
+      type="text"
+      placeholder="Write a keyword here"
+      v-model="searchKeyWord"
+    />
+  </div>
   <div class="row" v-if="loading"></div>
   <div v-else>Loading...</div>
   <div v-if="movies.results">{{ getResults() }}</div>
