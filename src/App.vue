@@ -21,13 +21,16 @@ export default {
           console.log(response.data.results);
           this.movies = response.data.results;
           this.loading = false;
+          console.log(this.movies);
         })
         .catch((error) => {
           console.error(error);
         });
     },
     getFilteredMovies() {
-      const customUrl = `${this.base_api_URL}&query=${this.searchKeyWord}`;
+      const url = `${this.base_api_URL}&query=${this.searchKeyWord}`;
+      console.log(url);
+      this.getMovies(url);
     },
   },
   computed: {
@@ -47,14 +50,20 @@ export default {
   <div class="filter">
     <input
       type="text"
-      placeholder="Write a keyword here"
+      placeholder="Write a Movie Title Here"
       v-model="searchKeyWord"
     />
+    <button @click="getFilteredMovies">Search Movies</button>
   </div>
-  <div class="row" v-if="loading"></div>
-  <div v-else>Loading...</div>
-  <div v-if="movies.results">{{ getResults() }}</div>
-  <div>{{ movies.results ? getResults : "No results" }}</div>
+  <div class="row" v-for="movie in movies.results">
+    <div class="card">
+      <img src="" alt="" />
+      <h3>{{ movie.title }}</h3>
+      <h5>{{ movie.original_title }}</h5>
+      <p>{{ movie.original_language }}</p>
+      <p>{{ movie.vote_average }}</p>
+    </div>
+  </div>
 </template>
 
 <style></style>
