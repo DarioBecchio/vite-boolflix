@@ -6,10 +6,10 @@ export default {
     return {
       base_api_URL:
         "https://api.themoviedb.org/3/search/movie?api_key=95637083a684a97bfbd4044fa4e72f18",
+      base_image_URL: "https://image.tmdb.org/t/p/w342",
       movies: [],
-      loading: true,
-      error: false,
       searchKeyWord: "",
+      images: [],
     };
   },
   methods: {
@@ -20,7 +20,6 @@ export default {
           console.log(response);
           console.log(response.data.results);
           this.movies = response.data.results;
-          this.loading = false;
           console.log(this.movies);
         })
         .catch((error) => {
@@ -32,17 +31,16 @@ export default {
       console.log(url);
       this.getMovies(url);
     },
+    getFilteredImages() {
+      const imageUrl = `${this.base_image_URL}${this}`;
+    },
   },
   computed: {
     getResults() {
       return this.movies.data.results.length;
     },
   },
-  created() {
-    setTimeout(() => {
-      this.getMovies(this.base_api_URL);
-    }, 3000);
-  },
+  created() {},
 };
 </script>
 
@@ -55,14 +53,13 @@ export default {
     />
     <button @click="getFilteredMovies">Search Movies</button>
   </div>
-  <div class="row" v-for="movie in movies.results">
-    <div class="card">
-      <img src="" alt="" />
-      <h3>{{ movie.title }}</h3>
-      <h5>{{ movie.original_title }}</h5>
-      <p>{{ movie.original_language }}</p>
-      <p>{{ movie.vote_average }}</p>
-    </div>
+
+  <div class="card" v-for="movie in movies">
+    <img :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" alt="" />
+    <h3>{{ movie.title }}</h3>
+    <h5>{{ movie.original_title }}</h5>
+    <p>{{ movie.original_language }}</p>
+    <p>{{ movie.vote_average }}</p>
   </div>
 </template>
 
