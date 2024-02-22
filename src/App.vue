@@ -2,6 +2,7 @@
 import axios from "axios";
 import AppHeader from "./components/AppHeader.vue";
 import AppMain from "./components/AppMain.vue";
+import { state } from "./state.js";
 export default {
   name: "App",
   data() {
@@ -11,7 +12,7 @@ export default {
       base_image_URL: "https://image.tmdb.org/t/p/w342",
       movies: [],
       searchKeyWord: "",
-      images: [],
+      state,
     };
   },
   methods: {
@@ -34,13 +35,16 @@ export default {
       this.getMovies(url);
     },
   },
+
   components: { AppHeader, AppMain },
   computed: {
     getResults() {
       return this.movies.data.results.length;
     },
   },
-  created() {},
+  mounted() {
+    console.log(state.api_url);
+  },
 };
 </script>
 
