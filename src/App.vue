@@ -1,4 +1,5 @@
 <script>
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 import axios from "axios";
 import { state } from "./state.js";
 export default {
@@ -26,13 +27,23 @@ export default {
           console.error(error);
         });
     },
-
     getFilteredMovie() {
       const urlMovie = `${this.base_api_URL}/movie?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
       console.log(urlMovie);
       this.getMovies(urlMovie);
     },
-
+    /*getFilteredSelection() {
+      const urlTvSeries = `${this.base_api_URL}/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
+      const urlMovie = `${this.base_api_URL}/movie?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
+      console.log(urlMovie, urlTvSeries);
+      this.getMovies(urlMovie, urlTvSeries);
+    },
+    getFilteredTvSeries() {
+      const urlTvSeries = `${this.base_api_URL}/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
+      console.log(urlTvSeries);
+      this.getMovies(urlTvSeries);
+    },
+    */
     /*getTvSeries(url) {
       axios
         .get(url)
@@ -42,20 +53,16 @@ export default {
           this.TvSeries = response.data.results;
           console.log(this.TvSeries);
         })
+
         .catch((error) => {
           console.error(error);
         });
-    },
-    getFilteredTvSeries() {
-      const urlTvSeries = `${this.base_api_URL}/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      console.log(urlTvSeries);
-      this.getTvSeries(urlTvSeries);
     },*/
   },
 
   computed: {
     getResults() {
-      return this.movies.total_results;
+      return this.movies.length;
     },
   },
   mounted() {
@@ -82,9 +89,11 @@ export default {
         v-model="searchKeyWord"
         @keyup.enter="getFilteredMovie"
       />
-      <!--<button @click.enter="getFilteredMovies">Search Movies</button>-->
     </div>
-    <div class="results">{{ getResults }}</div>
+    <div class="results">
+      <p>Sono stati trovati</p>
+      {{ getResults }}
+    </div>
     <div class="card" v-for="movie in movies">
       <img
         :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`"
@@ -92,19 +101,16 @@ export default {
       />
       <h3>{{ movie.title }}</h3>
       <h5>{{ movie.original_title }}</h5>
-      <p>{{ Math.ceil(movie.vote_average / 2) }}</p>
-      <p><span class="fi fi-{{ movie.original_language }} fis"></span></p>
+      <p>
+        <span :style="`--rating:${Math.ceil(movie.vote_average / 2)}`"></span
+        >{{ Math.ceil(movie.vote_average / 2) }}
+      </p>
+      <!---->
+      <p>
+        <span v-bind:class="`fi fi-${movie.original_language}`"></span
+        >{{ movie.original_language }}
+      </p>
     </div>
-    <!-- <div class="card" v-for="serie in TvSeries">
-      <img
-        :src="`https://image.tmdb.org/t/p/w342${serie.poster_path}`"
-        alt=""
-      />
-      <h3>{{ serie.title }}</h3>
-      <h5>{{ serie.original_title }}</h5>
-      <p>{{ Math.ceil(serie.vote_average / 2) }}</p>
-      <p>{{ serie.original_language }}</p>
-    </div> -->
   </header>
 </template>
 
@@ -117,5 +123,19 @@ header {
 .container {
   display: flex;
   justify-content: space-between;
+}
+
+[style^="--rating"]::after {
+  content: "★★★★★";
+  font-size: 2em;
+  white-space: nowrap;
+  background: linear-gradient(
+    90deg,
+    #fb0 calc(var(--rating) * 20%),
+    #ddd calc(var(--rating) * 20%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: #0000;
 }
 </style>
