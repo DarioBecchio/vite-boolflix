@@ -53,6 +53,8 @@ img {
     }
   }
 }
+
+/*#Flags class collection*/
 .fib,
 .fi {
   background-size: contain;
@@ -1962,3 +1964,5 @@ img {
 .fi-xk.fis {
   background-image: url(../flags/1x1/xk.svg);
 }
+
+/*#endflags collection*/

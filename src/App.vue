@@ -1,12 +1,13 @@
 <script>
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import axios from "axios";
-import { state } from "./state.js";
+import { state } from "./state";
 export default {
   name: "App",
   data() {
+    state;
     return {
-      base_api_URL: "https://api.themoviedb.org/3/search",
+      base_api_URL: "https://api.themoviedb.org/3/",
       base_image_URL: "https://image.tmdb.org/t/p/w342",
       movies: [],
       TvSeries: [],
@@ -14,7 +15,15 @@ export default {
     };
   },
   methods: {
-    getMovies(url) {
+    fetchData(url) {
+      axios.get(url).then((response) => {
+        console.log(response);
+      });
+    },
+
+    getMovies() {
+      const url = `${this.base_api_URL}search/movie?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
+      console.log(url);
       axios
         .get(url)
         .then((response) => {
@@ -27,45 +36,33 @@ export default {
           console.error(error);
         });
     },
-    getFilteredMovie() {
-      const urlMovie = `${this.base_api_URL}/movie?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      console.log(urlMovie);
-      this.getMovies(urlMovie);
-    },
-    /*getFilteredSelection() {
-      const urlTvSeries = `${this.base_api_URL}/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      const urlMovie = `${this.base_api_URL}/movie?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      console.log(urlMovie, urlTvSeries);
-      this.getMovies(urlMovie, urlTvSeries);
-    },
-    getFilteredTvSeries() {
-      const urlTvSeries = `${this.base_api_URL}/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      console.log(urlTvSeries);
-      this.getMovies(urlTvSeries);
-    },
-    */
-    /*getTvSeries(url) {
+    getTvSeries() {
+      const url = `${this.base_api_URL}search/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
+      console.log(url);
       axios
         .get(url)
         .then((response) => {
           console.log(response);
           console.log(response.data.results);
           this.TvSeries = response.data.results;
-          console.log(this.TvSeries);
         })
 
         .catch((error) => {
           console.error(error);
         });
-    },*/
+    },
   },
 
   computed: {
-    getResults() {
+    getMoviesResults() {
       return this.movies.length;
+    },
+    getTvSeriesResults() {
+      return this.TvSeries.length;
     },
   },
   mounted() {
+    this.fetchData(state.api_url);
     console.log(state.api_url);
   },
 };
@@ -87,13 +84,31 @@ export default {
         type="text"
         placeholder="Scrivi un titolo o una parola"
         v-model="searchKeyWord"
-        @keyup.enter="getFilteredMovie"
+        @keyup.enter="getMovies(), getTvSeries()"
       />
     </div>
     <div class="results">
-      <p>Sono stati trovati</p>
-      {{ getResults }}
+      <p>Film trovati: {{ this.movies.length }}</p>
+      <p>Serie Tv trovate: {{ this.TvSeries.length }}</p>
     </div>
+    <div class="card" v-for="TvSerie in TvSeries">
+      <img
+        :src="`https://image.tmdb.org/t/p/w342${TvSerie.poster_path}`"
+        alt=""
+      />
+      <h3>{{ TvSerie.title }}</h3>
+      <h5>{{ TvSerie.original_title }}</h5>
+      <p>
+        <span :style="`--rating:${Math.ceil(TvSerie.vote_average / 2)}`"></span
+        >{{ TvSerie.vote_count }}
+      </p>
+      <!---->
+      <p>
+        <span v-bind:class="`fi fi-${TvSerie.original_language}`"></span
+        >{{ TvSerie.original_language }}
+      </p>
+    </div>
+
     <div class="card" v-for="movie in movies">
       <img
         :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`"
@@ -103,7 +118,7 @@ export default {
       <h5>{{ movie.original_title }}</h5>
       <p>
         <span :style="`--rating:${Math.ceil(movie.vote_average / 2)}`"></span
-        >{{ Math.ceil(movie.vote_average / 2) }}
+        >{{ movie.vote_count }}
       </p>
       <!---->
       <p>
