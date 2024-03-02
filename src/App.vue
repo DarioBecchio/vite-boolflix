@@ -1,57 +1,24 @@
 <script>
 import "/node_modules/flag-icons/css/flag-icons.min.css";
-import axios from "axios";
+//import axios from "axios";
+import AppHeader from "./AppHeader.vue";
+import AppMain from "./AppMain.vue";
 import { state } from "./state";
 export default {
   name: "App",
+  components: {
+    AppHeader,
+    AppMain,
+  },
   data() {
     state;
     return {
-      base_api_URL: "https://api.themoviedb.org/3/",
       base_image_URL: "https://image.tmdb.org/t/p/w342",
-      movies: [],
-      TvSeries: [],
+
       searchKeyWord: "",
     };
   },
-  methods: {
-    fetchData(url) {
-      axios.get(url).then((response) => {
-        console.log(response);
-      });
-    },
-
-    getMovies() {
-      const url = `${this.base_api_URL}search/movie?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response);
-          console.log(response.data.results);
-          this.movies = response.data.results;
-          console.log(this.movies);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    getTvSeries() {
-      const url = `${this.base_api_URL}search/tv?api_key=95637083a684a97bfbd4044fa4e72f18&query=${this.searchKeyWord}`;
-      console.log(url);
-      axios
-        .get(url)
-        .then((response) => {
-          console.log(response);
-          console.log(response.data.results);
-          this.TvSeries = response.data.results;
-        })
-
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-  },
+  methods: {},
 
   computed: {
     getMoviesResults() {
@@ -62,13 +29,15 @@ export default {
     },
   },
   mounted() {
-    this.fetchData(state.api_url);
+    state.fetchData(state.api_url);
     console.log(state.api_url);
   },
 };
 </script>
 
 <template>
+  <AppHeader></AppHeader>
+  <AppMain></AppMain>
   <header>
     <div class="container">
       <!-- Logo-->
