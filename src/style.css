@@ -54,6 +54,19 @@ img {
   }
 }
 
+[style^="--rating"]::after {
+  content: "★★★★★";
+  font-size: 2em;
+  white-space: nowrap;
+  background: linear-gradient(
+    90deg,
+    #fb0 calc(var(--rating) * 20%),
+    #ddd calc(var(--rating) * 20%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: #0000;
+}
 /*#Flags class collection*/
 .fib,
 .fi {

@@ -3,6 +3,7 @@ import axios from "axios";
 export const state = reactive({
   /*Reactive object - global state*/
   api_url: "https://api.themoviedb.org/3/",
+  searchKeyWord: "",
   movies: [],
   TvSeries: [],
   fetchData(url) {
