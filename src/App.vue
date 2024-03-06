@@ -14,8 +14,6 @@ export default {
     state;
     return {
       base_image_URL: "https://image.tmdb.org/t/p/w342",
-
-      searchKeyWord: "",
     };
   },
   methods: {},

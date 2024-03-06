@@ -1,33 +1,33 @@
 <script>
+import filterResults from "./components/filterResults.vue";
+import logo from "./components/logo.vue";
 import { state } from "./state";
 export default {
   name: "AppHeader",
+  components: {
+    filterResults,
+    logo,
+  },
   data() {
     return {
       state,
     };
   },
+  methods: {
+    filteredResults() {
+      state.getMovies(), state.getTvSeries();
+    },
+  },
 };
 </script>
+
 <template>
   <header>
     <div class="container">
       <!-- Logo-->
-      <div class="logo">
-        <img
-          src="https://image.tmdb.org/t/p/w342/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-          alt="logo Netflix"
-        />
-      </div>
+      <logo></logo>
       <!-- filter -->
-      <div class="searchbar">
-        <input
-          type="text"
-          placeholder="Scrivi un titolo o una parola"
-          v-model="state.searchKeyWord"
-          @keyup.enter="state.getMovies(), state.getTvSeries()"
-        />
-      </div>
+      <filterResults @filtered="filteredResults"></filterResults>
     </div>
   </header>
 </template>
@@ -40,11 +40,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  & input {
-    height: 40px;
-    width: 250px;
   }
 }
 </style>
