@@ -1,10 +1,13 @@
 <script>
 import { state } from "./state";
+import resultCount from "./components/resultCount.vue";
 export default {
   name: "AppMain",
+  components: {
+    resultCount,
+  },
   data() {
     return {
-      showElement: true,
       state,
     };
   },
@@ -12,10 +15,7 @@ export default {
 </script>
 <template>
   <section class="showResults">
-    <div class="results">
-      <p>Film trovati: {{ state.movies.length }}</p>
-      <p>Serie Tv trovate: {{ state.TvSeries.length }}</p>
-    </div>
+    <resultCount></resultCount>
     <div class="container">
       <div class="row">
         <div class="col" v-for="TvSerie in state.TvSeries">
@@ -50,15 +50,15 @@ export default {
                 alt=""
               />
             </div>
-            <div class="description" v-if="showElement === true">
+            <div class="description">
               <h3>{{ movie.title }}</h3>
               <h5>{{ movie.original_title }}</h5>
-              <p>
+              <div>
                 <span
                   :style="`--rating:${Math.ceil(movie.vote_average / 2)}`"
                 ></span
                 >{{ movie.vote_count }}
-              </p>
+              </div>
               <p>
                 <span v-bind:class="`fi fi-${movie.original_language}`"></span
                 >{{ movie.original_language }}
@@ -75,25 +75,35 @@ export default {
   background-color: white;
 }
 
-.results {
-  width: 100%;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: space-evenly;
-  color: white;
-}
 .card {
   position: relative;
+  min-width: 100%;
+  min-height: 300px;
 }
 .poster {
   display: block;
+  position: absolute;
+  top: 0;
   z-index: 999;
+
+  &:hover {
+    display: none;
+  }
 }
 .description {
   position: absolute;
   top: 0;
-  left: 0;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   display: block;
-  z-index: 1;
+}
+
+.show {
+  display: block;
+}
+.hide {
+  display: none;
 }
 </style>
