@@ -20,25 +20,24 @@ export default {
       <div class="row">
         <div class="col" v-for="TvSerie in state.TvSeries">
           <div class="card">
-            <div class="poster">
-              <img
-                :src="`https://image.tmdb.org/t/p/w342${TvSerie.poster_path}`"
-                alt=""
-              />
-            </div>
+            <img
+              :src="`https://image.tmdb.org/t/p/w342${TvSerie.poster_path}`"
+              alt=""
+            />
             <div class="description">
               <h3>{{ TvSerie.name }}</h3>
               <h5>{{ TvSerie.original_name }}</h5>
-              <p>
+              <p>{{ TvSerie.overview }}</p>
+              <div>
                 <span
                   :style="`--rating:${Math.ceil(TvSerie.vote_average / 2)}`"
                 ></span
                 >{{ TvSerie.vote_count }}
-              </p>
-              <p>
+              </div>
+              <div>
                 <span v-bind:class="`fi fi-${TvSerie.original_language}`"></span
                 >{{ TvSerie.origin_country[0] }}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -53,16 +52,17 @@ export default {
             <div class="description">
               <h3>{{ movie.title }}</h3>
               <h5>{{ movie.original_title }}</h5>
+              <p>{{ movie.overview }}</p>
               <div>
                 <span
                   :style="`--rating:${Math.ceil(movie.vote_average / 2)}`"
                 ></span
                 >{{ movie.vote_count }}
               </div>
-              <p>
+              <div>
                 <span v-bind:class="`fi fi-${movie.original_language}`"></span
                 >{{ movie.original_language }}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -71,39 +71,28 @@ export default {
   </section>
 </template>
 <style scoped>
-.col {
-  background-color: white;
-}
-
 .card {
   position: relative;
-  min-width: 100%;
-  min-height: 300px;
+  overflow: hidden;
 }
-.poster {
-  display: block;
-  position: absolute;
-  top: 0;
-  z-index: 999;
+.card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
 
-  &:hover {
-    display: none;
-  }
-}
 .description {
-  position: absolute;
-  top: 0;
   background-color: white;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  display: block;
+  position: absolute;
+  top: 0;
+  right: -100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.show {
-  display: block;
-}
-.hide {
-  display: none;
+.card:hover .description {
+  right: 0;
 }
 </style>
