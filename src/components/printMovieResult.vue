@@ -2,7 +2,7 @@
 export default {
   name: "printMovieResult",
   props: {
-    movie: Array,
+    movie: Object,
   },
 };
 </script>
@@ -20,8 +20,8 @@ export default {
         <h5>{{ movie.original_title }}</h5>
         <p class="overview">{{ movie.overview }}</p>
         <div>
-          <span :style="`--rating:${Math.ceil(movie.vote_average / 2)}`"></span
-          >{{ movie.vote_count }}
+          <span :style="`--rating:${Math.ceil(movie.vote_average / 2)}`">
+          </span>
         </div>
         <div>
           <span v-bind:class="`fi fi-${movie.original_language}`"></span

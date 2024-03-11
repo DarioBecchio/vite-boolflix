@@ -34,6 +34,7 @@ export default {
   background-color: white;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  padding: 1rem;
 }
 .results > p {
   font-weight: 600;

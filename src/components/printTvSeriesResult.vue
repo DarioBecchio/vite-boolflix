@@ -2,7 +2,7 @@
 export default {
   name: "printTvSeriesResult",
   props: {
-    TvSerie: Array,
+    TvSerie: Object,
   },
 };
 </script>
@@ -20,12 +20,11 @@ export default {
         <div>
           <span
             :style="`--rating:${Math.ceil(TvSerie.vote_average / 2)}`"
-          ></span
-          >{{ TvSerie.vote_count }}
+          ></span>
         </div>
         <div>
           <span v-bind:class="`fi fi-${TvSerie.original_language}`"></span
-          >{{ TvSerie.origin_country[0] }}
+          >{{ TvSerie.original_language }}
         </div>
       </div>
     </div>
